@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=
+    , initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <script src="https://kit.fontawesome.com/ff44d81e2b.js" crossorigin="anonymous"></script>
+  <title>User Management System - Home</title>
+</head>
+
+<body>
+  <%- include('partials/_header') %>
+  <div id="site-main">
+    <div class="container">
+      <div class="box-nav d-flex justify-between">
+        <a href="create-newUser" class="border-shadow">
+          <span class="text-gradient">New User <i class="fa-solid fa-user"></i></span></a>
+      </div>
+      <!--form-->
+      <form action="/" method="POST">
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>@Email</th>
+              <th>Gender</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i = 0; i < users.length; i++) {%>
+            <tr>
+              <td><%= i+1 %></td>
+              <td><%= users[i].name %></td>
+              <td><%= users[i].email %></td>
+              <td><%= users[i].gender %></td>
+              <td><%= users[i].status %></td>
+              <td>
+                <a href="/updateUser?id=<%= users[i]._id %>" class="btn border-shadow update">
+                  <span class="text-gradient"><i class="fa-solid fa-pencil"></i></span>
+                </a>
+                <a class="btn border-shadow delete" id="delButton" data-id=<%=users[i]._id%>>
+                  <span><i class="fa-solid fa-x"></i></span>
+                </a>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+  <%- include('partials/_footer') %>
+</body>
+
+</html>

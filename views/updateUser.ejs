@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=
+    , initial-scale=1.0"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <script
+      src="https://kit.fontawesome.com/ff44d81e2b.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>User Management System - Update User Details</title>
+  </head>
+  <body>
+    <!--header-->
+    <div id="header">
+      <nav>
+        <div class="container">
+          <div class="text-center">
+            <a href="/" class="nav-brand text-dark">User Management System</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <!--header-->
+
+    <div id="site-main">
+      <div class="container">
+        <div class="box-nav d-flex justify-between">
+          <div class="filter">
+            <a href="/"><i class="fa-solid fa-left-long"></i>All Users</a>
+          </div>
+        </div>
+        <div class="form-title text-center">
+          <h2 class="text-dark">Update User</h2>
+          <span class="text-light"> Edit existing user details.</span>
+        </div>
+        <!--form-->
+        <form id="update-user">
+          <div class="new-user">
+            <div class="form-group">
+              <label for="name" class="text-light">Name</label>
+              <input type="hidden" id="id" value="<%= user._id %>" name="id" />
+              <input
+                type="text"
+                id="name"
+                value="<%= user.name %>"
+                name="name"
+                placeholder="enter name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="email" class="text-light">Email</label>
+              <input
+                type="text"
+                id="email"
+                value="<%= user.email %>"
+                name="email"
+                placeholder="mail@mail.com"
+              />
+            </div>
+            <div class="form-group">
+              <label for="gender" class="text-light">Gender</label>
+              <div class="radio inline">
+                <input type="radio" name="gender" value="male" <%=
+                user.gender=="male"?"checked":""%> />
+                <label for="gender" class="text-light">Male</label>
+              </div>
+              <div class="radio inline">
+                <input type="radio" name="gender" value="female" <%=
+                user.gender=="female"?"checked":""%> />
+                <label for="gender" class="text-light">Female</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="status" class="text-light">Status</label>
+              <div class="radio inline">
+                <input type="radio" name="status" value="active" <%=
+                user.status=="active"?"checked":""%> />
+                <label for="status" class="text-light">Active</label>
+              </div>
+              <div class="radio inline">
+                <input type="radio" name="status" value="inactive" <%=
+                user.status=="inactive"?"checked":""%> />
+                <label for="gender" class="text-light">Inactive</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn text-dark update">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script>
+      function displayGenderValue() {
+        var ele = document.getElementsByName("gender")
+
+        for (i = 0; i < ele.length; i++) {
+          if (ele[i].checked) {
+            const gender = ele[i].value
+            return gender
+          }
+        }
+        return
+      }
+
+      function displayStatusValue() {
+        var ele = document.getElementsByName("status")
+
+        for (i = 0; i < ele.length; i++) {
+          if (ele[i].checked) {
+            const userStatus = ele[i].value
+            return userStatus
+          }
+        }
+        return
+      }
+      const updatedUser = async (data) => {
+        const options = {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+        const resource = await fetch("http://localhost:3000/users", options)
+          .then((response) => {
+            if (response.status == 400) {
+              alert(
+                "Either you haven't entered the complete details or user doesn't exist!"
+              )
+              location.reload()
+            } else if (response.status == 200) {
+              alert("Details updated successfully!")
+              location.assign("/")
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      }
+
+      document.querySelector("#update-user").addEventListener("submit", (e) => {
+        e.preventDefault()
+        const name = document.getElementById("name").value
+        const email = document.getElementById("email").value
+        const id = document.getElementById("id").value
+        const gender = displayGenderValue()
+        const status = displayStatusValue()
+        const data = { name, email, gender, status, id }
+
+        updatedUser(data)
+      })
+    </script>
+  </body>
+</html>
